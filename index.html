@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>DRAW by RobRomijnders</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>DRAW</h1>
+        <p>Deep Recurrent Attentive Writer</p>
+
+        <p class="view"><a href="https://github.com/RobRomijnders/DRAW">View the Project on GitHub <small>RobRomijnders/DRAW</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/RobRomijnders/DRAW/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/RobRomijnders/DRAW/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/RobRomijnders/DRAW">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="deep-recurrent-attentive-writer" class="anchor" href="#deep-recurrent-attentive-writer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Deep Recurrent Attentive Writer</h1>
+
+<p>This post implements the Deep Recurrent Attentive Writer</p>
+
+<p>Many people preceded me with fascinating implementations</p>
+
+<ul>
+<li><a href="https://github.com/vivanov879/draw">Am implementation in Torch</a></li>
+<li><a href="https://github.com/jbornschein/draw">An implementation in Theano</a></li>
+<li><a href="https://github.com/ikostrikov/TensorFlow-VAE-GAN-DRAW">An implementation in Tensorflow with Pretty Tensor</a></li>
+<li><a href="https://github.com/ericjang/draw">A clean implementation in Tensorflow</a></li>
+</ul>
+
+<p>This implementation goes end to end in 250 lines of code. We start at <code>import MNIST</code> and end up with these lovely visualizations.</p>
+
+<h2>
+<a id="read" class="anchor" href="#read" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Read</h2>
+
+<p><img src="https://github.com/RobRomijnders/DRAW/blob/master/canvas/mnist_read.gif?raw=true" alt="READ_DRAW"></p>
+
+<h2>
+<a id="write" class="anchor" href="#write" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Write</h2>
+
+<p><img src="https://github.com/RobRomijnders/DRAW/blob/master/canvas/mnist_write.gif?raw=true" alt="WRITE_DRAW"></p>
+
+<p>This series of posts, implementing an <a href="https://robromijnders.github.io/VAE/">Variational autoencoder</a>, followed by a <a href="https://robromijnders.github.io/VAE_rec/">variational recurrent autoencoder</a> and now the DRAW was inspired after <a href="https://www.youtube.com/watch?v=P78QYjWh5sM">Karol Gregor's lecture at Oxford</a>. More recently, he <a href="https://dl.dropboxusercontent.com/u/16027344/ICML%202015%20Deep%20Learning%20Workshop/Karol%20Gregor%2C%20GOOGLE%20Deepmind.p2g/Default.html">ties his work together at ICML</a> (or use <a href="https://www.youtube.com/watch?v=en8UlmZ9w6E">this</a> link).</p>
+
+<p>Moreover if you'd like a better introduction to variational inference, go for this talk by <a href="https://www.youtube.com/watch?v=rjZL7aguLAs">Diederik Kingma at ICLR</a> or go for <a href="https://arxiv.org/abs/1312.6114">his paper</a>.</p>
+
+<p>As always, I am curious to any comments and questions. Reach me at <a href="mailto:romijndersrob@gmail.com">romijndersrob@gmail.com</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/RobRomijnders">RobRomijnders</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
