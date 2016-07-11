@@ -1,4 +1,5 @@
 *.pyc
+*.gz
 canvas0.png
 canvas1.png
 canvas2.png

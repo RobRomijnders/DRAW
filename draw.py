@@ -17,17 +17,23 @@ https://github.com/ericjang/draw
 """
 
 import tensorflow as tf
-from tensorflow.models.rnn.rnn_cell import LSTMCell
 from tensorflow.examples.tutorials import mnist
 import numpy as np
 import os
 import sys
-sys.path.append('/home/rob/Dropbox/ml_projects/DRAW/')
+import socket
+if 'rob-laptop' in socket.gethostname():
+  sys.path.append('/home/rob/Dropbox/ml_projects/DRAW/')
+  direc = '/home/rob/Dropbox/ConvNets/tf/MNIST'
+  direc_plot = '/home/rob/Dropbox/ml_projects/DRAW/canvas/'
+elif 'rob-com' in socket.gethostname():
+  sys.path.append('/home/rob/Documents/DRAW/')
+  direc = '/home/rob/Documents/DRAW/MNIST'
+  direc_plot = '/home/rob/Documents/DRAW/canvas/'
 from plot_DRAW import *
 
 
 """Load data"""
-direc = '/home/rob/Dropbox/ConvNets/tf/MNIST'
 #data_directory = os.path.join(direc, "mnist")
 #if not os.path.exists(data_directory):
 #	os.makedirs(data_directory)
@@ -44,7 +50,7 @@ write_size = patch_write*patch_write
 num_l=10                    # Dimensionality of the latent space
 sl=10                       # Sequence length
 batch_size=100
-max_iterations=1000
+max_iterations=20000
 learning_rate=1e-3
 eps=1e-8                    # Small number to prevent numerical instability
 A,B = 28,28                 # Size of image
@@ -162,8 +168,8 @@ def write(h_dec):
 with tf.variable_scope("placeholders") as scope:
   x = tf.placeholder(tf.float32,shape=(batch_size,cv_size)) # input (batch_size * cv_size)
   e = tf.random_normal((batch_size,num_l), mean=0, stddev=1) # Qsampler noise
-  lstm_enc = LSTMCell(hidden_size_enc, read_size+hidden_size_dec) # encoder Op
-  lstm_dec = LSTMCell(hidden_size_dec, num_l) # decoder Op
+  lstm_enc = tf.nn.rnn_cell.LSTMCell(hidden_size_enc, read_size+hidden_size_dec) # encoder Op
+  lstm_dec = tf.nn.rnn_cell.LSTMCell(hidden_size_dec, num_l) # decoder Op
 
 with tf.variable_scope("States") as scope:
   canvas=[0]*sl # The canves gets sequentiall painted on
@@ -212,11 +218,12 @@ with tf.variable_scope("Loss_comp") as scope:
   cost=cost_recon+cost_lat
 
 with tf.variable_scope("Optimization") as scope:
-  optimizer=tf.train.AdamOptimizer(learning_rate, beta1=0.5)
+  optimizer=tf.train.AdamOptimizer(learning_rate)
   grads=optimizer.compute_gradients(cost)
   for i,(g,v) in enumerate(grads):  #g = gradient, v = variable
     if g is not None:
         grads[i]=(tf.clip_by_norm(g,5),v) # Clip the gradients of LSTM
+        print(v.name)
   train_op=optimizer.apply_gradients(grads)
 
 print('Finished comp graph')
@@ -241,7 +248,6 @@ for i in range(max_iterations):
 read_params_fetch = sess.run(read_params,feed_dict) #List of length (sl) with np arrays in [batch_size,3]
 write_params_fetch = sess.run(write_params,feed_dict)
 canvases = sess.run(canvas,feed_dict)
-direc_plot = '/home/rob/Dropbox/ml_projects/DRAW/canvas/'
 plot_DRAW_read(read_params_fetch, feed_dict[x],direc_plot,5)
 plot_DRAW_read(write_params_fetch, feed_dict[x],direc_plot,5,cv=canvases)
 
