@@ -48,9 +48,9 @@ patch_write = 5             # Size of patch to write
 read_size = 2*patch_read*patch_read
 write_size = patch_write*patch_write
 num_l=10                    # Dimensionality of the latent space
-sl=10                       # Sequence length
+sl=20                       # Sequence length
 batch_size=100
-max_iterations=20000
+max_iterations=40000
 learning_rate=1e-3
 eps=1e-8                    # Small number to prevent numerical instability
 A,B = 28,28                 # Size of image
@@ -211,7 +211,7 @@ with tf.variable_scope("Loss_comp") as scope:
     mu2=tf.square(mus[t])
     sigma2=tf.square(sigmas[t])
     logsigma=logsigmas[t]
-    kls[t]=0.5*tf.reduce_sum(mu2+sigma2-2*logsigma,1)-sl*.5
+    kls[t]=0.5*tf.reduce_sum(mu2+sigma2-2*logsigma-1.0,1)  #-sl*.5
   kl=tf.add_n(kls) # adds tensors over the list
   cost_lat=tf.reduce_mean(kl) # average over minibatches
 
@@ -250,6 +250,8 @@ write_params_fetch = sess.run(write_params,feed_dict)
 canvases = sess.run(canvas,feed_dict)
 plot_DRAW_read(read_params_fetch, feed_dict[x],direc_plot,5)
 plot_DRAW_read(write_params_fetch, feed_dict[x],direc_plot,5,cv=canvases)
+
+# debug = sess.run(mu2,feed_dict)
 
 #Now go to the directory and run  (after install ImageMagick)
 #  convert -delay 20 -loop 0 *.png mnist.gif
