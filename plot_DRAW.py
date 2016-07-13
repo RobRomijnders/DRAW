@@ -77,6 +77,7 @@ def plot_DRAW_read(par, X ,direc = '/tmp/',Nplot = 5,cv=None):
     plt.figure()
     plt.imshow(canvas,cmap='gray')
     plt.savefig(imname)
+    plt.close('all')
 
 
 

@@ -48,10 +48,11 @@ patch_write = 5             # Size of patch to write
 read_size = 2*patch_read*patch_read
 write_size = patch_write*patch_write
 num_l=10                    # Dimensionality of the latent space
-sl=20                       # Sequence length
+sl=40                       # Sequence length
 batch_size=100
 max_iterations=40000
 learning_rate=1e-3
+dropout = 0.8
 eps=1e-8                    # Small number to prevent numerical instability
 A,B = 28,28                 # Size of image
 cv_size = B*A               # canvas size
@@ -168,8 +169,11 @@ def write(h_dec):
 with tf.variable_scope("placeholders") as scope:
   x = tf.placeholder(tf.float32,shape=(batch_size,cv_size)) # input (batch_size * cv_size)
   e = tf.random_normal((batch_size,num_l), mean=0, stddev=1) # Qsampler noise
+  keep_prob = tf.placeholder("float")
   lstm_enc = tf.nn.rnn_cell.LSTMCell(hidden_size_enc, read_size+hidden_size_dec) # encoder Op
+  lstm_enc = tf.nn.rnn_cell.DropoutWrapper(lstm_enc,output_keep_prob = keep_prob)
   lstm_dec = tf.nn.rnn_cell.LSTMCell(hidden_size_dec, num_l) # decoder Op
+  lstm_dec = tf.nn.rnn_cell.DropoutWrapper(lstm_dec,output_keep_prob = keep_prob)
 
 with tf.variable_scope("States") as scope:
   canvas=[0]*sl # The canves gets sequentiall painted on
@@ -239,7 +243,7 @@ sess.run(tf.initialize_all_variables())
 
 for i in range(max_iterations):
   xtrain,_=train_data.next_batch(batch_size)
-  feed_dict={x:xtrain}
+  feed_dict={x:xtrain,keep_prob: dropout}
   results=sess.run(fetches,feed_dict)
   costs_recon[i],costs_lat[i],_=results
   if i%100==0:
