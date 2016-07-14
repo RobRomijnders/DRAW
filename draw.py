@@ -255,6 +255,9 @@ for i in range(max_iterations):
   if i%100==0:
     print("iter=%d : cost_recon: %f cost_lat: %f" % (i,costs_recon[i],costs_lat[i]))
 
+#Testrun
+feed_dict[keep_prob] = 1.0
+
 read_params_fetch = sess.run(read_params,feed_dict) #List of length (sl) with np arrays in [batch_size,3]
 write_params_fetch = sess.run(write_params,feed_dict)
 canvases = sess.run(canvas,feed_dict)
