@@ -73,7 +73,7 @@ def plot_DRAW_read(par, X ,direc = '/tmp/',Nplot = 5,cv=None):
       iy = int(np.floor(l/Nplot))*im_width
 
       canvas[iy:iy+im_width,ix:ix+im_width] = im_boxed
-    imname = direc+'canvas'+str(t)+'.png'
+    imname = direc+'canvas'+str(10+t)+'.png'
     plt.figure()
     plt.imshow(canvas,cmap='gray')
     plt.savefig(imname)
