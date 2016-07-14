@@ -51,7 +51,7 @@ num_l=10                    # Dimensionality of the latent space
 sl=40                       # Sequence length
 batch_size=100
 max_iterations=40000
-learning_rate=1e-3
+learning_rate=1e-4
 dropout = 0.8
 eps=1e-8                    # Small number to prevent numerical instability
 A,B = 28,28                 # Size of image
@@ -148,7 +148,13 @@ def sample_lat(h_enc):
   with tf.variable_scope("sigma",reuse=REUSE_T):
     logsigma=linear(h_enc,num_l)
     sigma=tf.exp(logsigma)
-  return (mu + sigma*e, mu, logsigma, sigma)
+  return (mu + sigma*e, mu, logsigma, sigma)for i in range(max_iterations):
+  xtrain,_=train_data.next_batch(batch_size)
+  feed_dict={x:xtrain,keep_prob: dropout}
+  results=sess.run(fetches,feed_dict)
+  costs_recon[i],costs_lat[i],_=results
+  if i%100==0:
+    print("iter=%d : cost_recon: %f cost_lat: %f" % (i,costs_recon[i],costs_lat[i]))
 
 
 
@@ -261,3 +267,4 @@ plot_DRAW_read(write_params_fetch, feed_dict[x],direc_plot,5,cv=canvases)
 #  convert -delay 20 -loop 0 *.png mnist.gif
 
 
+#1250
